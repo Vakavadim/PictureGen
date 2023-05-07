@@ -30,8 +30,16 @@ class MainTabBarController: UITabBarController {
 		super.viewDidLoad()
 		
 		viewControllers = [
-			generateViewController(rootViewController: searchViewController, image: UIImage(), title: "Title"),
-			generateViewController(rootViewController: favoritesViewController, image: UIImage(), title: "Title2")
+			generateViewController(
+				rootViewController: searchViewController,
+				image: UIImage(),
+				title: L10n.SearchScene.title
+			),
+			generateViewController(
+				rootViewController: favoritesViewController,
+				image: UIImage(),
+				title: L10n.FavoritesScene.title
+			)
 		]
 	}
 	

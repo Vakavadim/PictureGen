@@ -33,6 +33,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			searchViewController: searchViewController,
 			favoritesViewController: favoritesViewController
 		)
+
+		mainTabBarController.tabBar.isTranslucent = false
+		mainTabBarController.tabBar.backgroundColor = .white
 		
 		return mainTabBarController
 	}

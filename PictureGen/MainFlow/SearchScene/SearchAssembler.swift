@@ -13,9 +13,11 @@ class SearchAssembler {
 
 	static func assembly() -> UIViewController {
 		let searchViewController = SearchViewController()
-		
 		let searchPresentor = SearchPresenter(viewController: searchViewController)
-		let searchIteractor = SearchInteractor(presenter: searchPresentor)
+		let searchIteractor = SearchInteractor(
+			presenter: searchPresentor,
+			imageDataFetcher: ImageDataFetcher()
+		)
 		
 		searchViewController.interactor = searchIteractor
 		

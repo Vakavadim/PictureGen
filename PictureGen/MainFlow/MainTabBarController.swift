@@ -28,16 +28,17 @@ class MainTabBarController: UITabBarController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		tabBar.tintColor = Theme.accentColor
 		
 		viewControllers = [
 			generateViewController(
 				rootViewController: searchViewController,
-				image: UIImage(),
+				image: Asset.searchIcon.image,
 				title: L10n.SearchScene.title
 			),
 			generateViewController(
 				rootViewController: favoritesViewController,
-				image: UIImage(),
+				image: Asset.favoriteIcon.image,
 				title: L10n.FavoritesScene.title
 			)
 		]
@@ -55,6 +56,7 @@ class MainTabBarController: UITabBarController {
 		navigationVC.tabBarItem.title = title
 		rootViewController.navigationItem.title = title
 		navigationVC.navigationBar.prefersLargeTitles = true
+
 		return navigationVC
 	}
 }

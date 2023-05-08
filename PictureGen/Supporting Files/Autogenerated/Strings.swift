@@ -12,6 +12,10 @@ internal enum L10n {
   }
 
   internal enum SearchScene {
+    /// Start typing text to generate an image.
+    internal static let info = L10n.tr("Localizable", "SearchScene.info")
+    /// Save
+    internal static let saveButtonTitle = L10n.tr("Localizable", "SearchScene.saveButtonTitle")
     /// Search
     internal static let title = L10n.tr("Localizable", "SearchScene.title")
   }

@@ -8,13 +8,25 @@
 import UIKit
 
 enum SearchModel {
-		struct Request {
-			let someData: String
+	struct Request {
+		let searchTerm: String
+	}
+	enum Response {
+		case success(PictureData)
+		case failure(ImageFetcherError)
+		
+		struct PictureData {
+			let imageData: Data
+			let searchTerm: String
 		}
-		struct Response {
-			let someData: String
+	}
+	enum ViewModel {
+		case success(Picture)
+		case failure(String)
+		
+		struct Picture {
+			let image: UIImage
+			let searchTerm: String
 		}
-		struct ViewModel {
-			let someData: String
-		}
+	}
 }

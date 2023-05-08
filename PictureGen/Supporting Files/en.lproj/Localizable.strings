@@ -7,4 +7,6 @@
 */
 
 "SearchScene.title" = "Search";
+"SearchScene.saveButtonTitle" = "Save";
+"SearchScene.info" = "Start typing text to generate an image.";
 "FavoritesScene.title" = "Favorites";

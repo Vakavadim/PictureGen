@@ -14,9 +14,10 @@ protocol ISearchViewController: AnyObject {
 
 class SearchViewController: UIViewController {
 	
-// MARK: - Internal Properties
+// MARK: - Dependencies
 	
 	var interactor: ISearchInteractor?
+	var router: ISearchRouter?
 
 // MARK: - Private properties
 	
@@ -35,16 +36,6 @@ class SearchViewController: UIViewController {
 	private lazy var infoLabel: UILabel = makeLabel(
 		accessibilityIdentifier: AccessibilityIdentifier.Search.infoLabel
 	)
-	
-// MARK: - Object lifecycle
-	
-	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-	}
-	
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-	}
 
 // MARK: - View lifecycle
 	
@@ -57,7 +48,16 @@ class SearchViewController: UIViewController {
 	
 	@objc
 	func save() {
+		if let image = imageView.image, let term = searchController.searchBar.text {
+			let picture = SearchModel.Request.Picture(
+				searchTerm: term,
+				image: image
+			)
+			interactor?.makeRequest(request: .savePicture(picture: picture))
+		}
 	}
+	
+// MARK: - Private methods
 	
 	private func setupSearchBar() {
 		navigationItem.searchController = searchController
@@ -69,6 +69,7 @@ class SearchViewController: UIViewController {
 }
 
 // MARK: - Layout
+
 private extension SearchViewController {
 	
 	func makeImageView(accessibilityIdentifier: String) -> UIImageView {
@@ -77,6 +78,7 @@ private extension SearchViewController {
 		imageView.layer.cornerRadius = Sizes.cornerRadius
 		imageView.accessibilityIdentifier = accessibilityIdentifier
 		imageView.backgroundColor = Theme.elementBackgroundColor
+		imageView.clipsToBounds = true
 		
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		
@@ -242,10 +244,16 @@ extension SearchViewController: ISearchViewController {
 		case .success(let picture):
 			DispatchQueue.main.async {
 				self.imageView.image = picture.image
+				self.imageView.layer.masksToBounds = true
 				self.loader.stopAnimating()
 			}
 		case .failure(let errorMessage):
-			print(errorMessage)
+			DispatchQueue.main.async {
+				self.loader.stopAnimating()
+			}
+			router?.showError(message: errorMessage)
+		case .saveMessage(let message):
+			router?.showMessage(message: message)
 		}
 	}
 }
@@ -256,9 +264,14 @@ extension SearchViewController: UISearchBarDelegate {
 		
 		timer?.invalidate()
 		timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false, block: { [unowned self] _ in
-			self.infoLabel.isHidden = true
-			self.loader.startAnimating()
-			self.interactor?.makeRequest(request: SearchModel.Request(searchTerm: searchText))
+			if !searchText.isEmpty && searchText != " "{
+				let term = SearchModel.Request.SearchTerm(term: searchText)
+				self.infoLabel.isHidden = true
+				self.loader.startAnimating()
+				self.interactor?.makeRequest(
+					request: .getImageWithTerm(searchTerm: term)
+				)
+			}
 		})
 	}
 }

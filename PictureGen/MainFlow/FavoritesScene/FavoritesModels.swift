@@ -8,13 +8,19 @@
 import UIKit
 
 enum FavoritesModel {
-		struct Request {
-			let someData: String
+	enum Request {
+		case fetchData
+		case deleteActionWasPerformed(String)
+	}
+	struct Response {
+		let pictureEntities: [Picture]
+	}
+	struct ViewModel {
+		let pictures: [Picture]
+		
+		struct Picture {
+			let image: UIImage
+			let term: String
 		}
-		struct Response {
-			let someData: String
-		}
-		struct ViewModel {
-			let someData: String
-		}
+	}
 }

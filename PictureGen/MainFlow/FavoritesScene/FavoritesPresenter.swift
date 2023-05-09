@@ -25,7 +25,21 @@ class FavoritesPresenter: IFavoritesPresener {
 	}
 	
 	func present(response: FavoritesModel.Response) {
-		let viewModel = FavoritesModel.ViewModel(someData: " ")
+		let pictures: [FavoritesModel.ViewModel.Picture] = response.pictureEntities.map {
+			mapPicture($0)
+		}
+		
+		let viewModel = FavoritesModel.ViewModel(pictures: pictures)
 		viewController?.render(viewModel: viewModel)
+	}
+	
+	private func mapPicture(_ pictureEntitie: Picture) -> FavoritesModel.ViewModel.Picture {
+		if let data = pictureEntitie.imageData {
+			let image = UIImage(data: data) ?? UIImage()
+			let term = pictureEntitie.requestString ?? " "
+			
+			return FavoritesModel.ViewModel.Picture(image: image, term: term)
+		}
+		return FavoritesModel.ViewModel.Picture(image: UIImage(), term: " ")
 	}
 }

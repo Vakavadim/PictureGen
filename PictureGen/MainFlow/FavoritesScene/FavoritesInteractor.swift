@@ -13,18 +13,29 @@ protocol IFavoritesInteractor {
 
 class FavoritesInteractor: IFavoritesInteractor {
 	
-	// MARK: - Internal properties
-	
-	var presenter: IFavoritesPresener?
+	// MARK: - Dependencies
+
+	private var presenter: IFavoritesPresener?
+	private var storageManager: Repository
 	
 	// MARK: - Lifecycle
 
-	init(presenter: IFavoritesPresener) {
+	init(presenter: IFavoritesPresener, storageManager: Repository) {
 		self.presenter = presenter
+		self.storageManager = storageManager
 	}
 	
 	func makeRequest(request: FavoritesModel.Request) {
-		let response = FavoritesModel.Response(someData: " ")
-		presenter?.present(response: response)
+		switch request {
+		case .fetchData:
+			storageManager.fetchData { [unowned self] pictures in
+				self.presenter?.present(response: FavoritesModel.Response(pictureEntities: pictures))
+			}
+		case .deleteActionWasPerformed(let term):
+			storageManager.delete(term)
+			storageManager.fetchData { [unowned self] pictures in
+				self.presenter?.present(response: FavoritesModel.Response(pictureEntities: pictures))
+			}
+		}
 	}
 }

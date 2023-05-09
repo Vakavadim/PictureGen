@@ -13,7 +13,7 @@ protocol ISearchPresener {
 
 class SearchPresenter: ISearchPresener {
 	
-	// MARK: - Internal properties
+	// MARK: - Dependencies
 	
 	weak var viewController: ISearchViewController?
 	
@@ -33,9 +33,17 @@ class SearchPresenter: ISearchPresener {
 			let searchViewModel = SearchModel.ViewModel.success(picture)
 			viewController?.render(viewModel: searchViewModel)
 		case .failure(let error):
-			let message = self.handleError(error)
+			let message: String
+			if let error = error as? ImageFetcherError {
+				message = self.handleError(error)
+			} else {
+				message = error.localizedDescription
+			}
 			let searchViewModel = SearchModel.ViewModel.failure(message)
 			viewController?.render(viewModel: searchViewModel)
+		case .save(let pictureSerchTerm):
+			let message = L10n.SearchScene.saveMessage + pictureSerchTerm
+			viewController?.render(viewModel: .saveMessage(message))
 		}
 	}
 	
@@ -44,9 +52,11 @@ class SearchPresenter: ISearchPresener {
 
 		switch error {
 		case .dataNotFound:
-			message = "net data"
+			message = L10n.SearchScene.ErrorMessage.dataNotFound
 		case .invalidUrl:
-			message = "net url"
+			message = L10n.SearchScene.ErrorMessage.invalidUrl
+		case .noInternetConnection:
+			message = L10n.SearchScene.ErrorMessage.noInternetConnection
 		}
 		return message
 	}

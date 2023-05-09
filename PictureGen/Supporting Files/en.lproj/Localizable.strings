@@ -9,4 +9,11 @@
 "SearchScene.title" = "Search";
 "SearchScene.saveButtonTitle" = "Save";
 "SearchScene.info" = "Start typing text to generate an image.";
+"SearchScene.saveMessage" = "The picture has been saved with seatch term: ";
+"SearchScene.errorMessage.dataNotFound" = "Data not found";
+"SearchScene.errorMessage.invalidUrl" = "Invalid Url";
+"SearchScene.errorMessage.noInternetConnection" = "No internet connection";
+"SearchScene.error" = "Error";
+
 "FavoritesScene.title" = "Favorites";
+"FavoritesScene.delete" = "Delete";

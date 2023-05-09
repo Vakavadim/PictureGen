@@ -8,12 +8,25 @@
 import UIKit
 
 enum SearchModel {
-	struct Request {
-		let searchTerm: String
+	enum Request {
+		case getImageWithTerm(searchTerm: SearchTerm)
+		case savePicture(picture: Picture)
+		
+		struct SearchTerm {
+			let term: String
+			var path: String {
+				term.replacingOccurrences(of: " ", with: "+")
+			}
+		}
+		struct Picture {
+			let searchTerm: String
+			let image: UIImage
+		}
 	}
 	enum Response {
 		case success(PictureData)
-		case failure(ImageFetcherError)
+		case failure(Error)
+		case save(String)
 		
 		struct PictureData {
 			let imageData: Data
@@ -23,6 +36,7 @@ enum SearchModel {
 	enum ViewModel {
 		case success(Picture)
 		case failure(String)
+		case saveMessage(String)
 		
 		struct Picture {
 			let image: UIImage

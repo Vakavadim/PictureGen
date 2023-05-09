@@ -11,11 +11,11 @@ class FavoritesAssembler {
 
 	// MARK: - Internal Methods
 
-	static func assembly() -> UIViewController {
+	static func assembly(storageManager: Repository) -> UIViewController {
 		let favoritesViewController = FavoritesViewController()
 		
 		let favoritesPresentor = FavoritesPresenter(viewController: favoritesViewController)
-		let favoritesIteractor = FavoritesInteractor(presenter: favoritesPresentor)
+		let favoritesIteractor = FavoritesInteractor(presenter: favoritesPresentor, storageManager: storageManager)
 		
 		favoritesViewController.interactor = favoritesIteractor
 		

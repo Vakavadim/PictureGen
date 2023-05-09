@@ -26,8 +26,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 	
 	private func assamble() -> UITabBarController {
-		let searchViewController = SearchAssembler.assembly()
-		let favoritesViewController = FavoritesAssembler.assembly()
+		let fileLimit: UInt8 = 12
+		let CDStorageManager = CDStorageManager()
+		let CDstorageManagerWithLimit = CDStorageManagerWithFileLimit(storageManager: CDStorageManager, fileLimit: fileLimit)
+		let searchViewController = SearchAssembler.assembly(storageManager: CDstorageManagerWithLimit)
+		let favoritesViewController = FavoritesAssembler.assembly(storageManager: CDstorageManagerWithLimit)
 		
 		let mainTabBarController = MainTabBarController(
 			searchViewController: searchViewController,

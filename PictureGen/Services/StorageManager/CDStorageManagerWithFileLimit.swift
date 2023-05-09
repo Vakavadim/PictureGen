@@ -14,7 +14,6 @@ final class CDStorageManagerWithFileLimit: Repository {
 	// MARK: - Private properties
 	private let storageManager: ICDStorageManager
 	private let fileLimit: UInt8
-	private var storedPictures: [Picture] = []
 	
 	// MARK: - Lifecycle
 	
@@ -41,9 +40,15 @@ final class CDStorageManagerWithFileLimit: Repository {
 	///   - imageData: изображение закодированное в тип данных Data.
 	func save(_ requestString: String, imageData: Data, completion: (Picture) -> Void) {
 		storageManager.fetchData { [unowned self] pictures in
-			if pictures.count != Int.zero && pictures.count >= fileLimit {
-				guard let oldestPicRequestString = pictures.last?.requestString else { return }
+			if pictures.count >= fileLimit {
+				guard let oldestPicRequestString = pictures.first?.requestString else { return }
 				self.storageManager.delete(oldestPicRequestString)
+				self.storageManager.save(
+					requestString,
+					imageData: imageData,
+					completion: completion
+				)
+			} else {
 				self.storageManager.save(
 					requestString,
 					imageData: imageData,

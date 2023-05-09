@@ -11,11 +11,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
 
-		// Create the window
 		window = UIWindow(frame: UIScreen.main.bounds)
 		window?.backgroundColor = .white
 
-		// Create the root view controller
+		window?.rootViewController = assembly()
+
+		window?.makeKeyAndVisible()
+
+		return true
+	}
+	
+	func assembly() -> UITabBarController {
 		let fileLimit: UInt8 = 12
 		let CDStorageManager = CDStorageManager()
 		let CDstorageManagerWithLimit = CDStorageManagerWithFileLimit(storageManager: CDStorageManager, fileLimit: fileLimit)
@@ -27,15 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			favoritesViewController: favoritesViewController
 		)
 
-		mainTabBarController.tabBar.isTranslucent = false
-		mainTabBarController.tabBar.backgroundColor = .white
+		mainTabBarController.tabBar.backgroundColor = Theme.backgroundColor
+		UITabBar.appearance().isTranslucent = true
 
-		// Set the root view controller
-		window?.rootViewController = mainTabBarController
-
-		// Make the window visible
-		window?.makeKeyAndVisible()
-
-		return true
+		return mainTabBarController
 	}
 }

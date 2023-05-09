@@ -15,7 +15,7 @@ class SearchInteractor: ISearchInteractor {
 	
 	// MARK: - Dependencies
 	
-	private var presenter: ISearchPresener?
+	var presenter: ISearchPresener?
 	private let imageDataFetcher: IImageDataFetcher
 	private var storageManager: Repository
 	
@@ -36,7 +36,7 @@ class SearchInteractor: ISearchInteractor {
 	func makeRequest(request: SearchModel.Request) {
 		switch request {
 		case .getImageWithTerm(searchTerm: let search):
-			DispatchQueue.main.async {
+//			DispatchQueue.main.async {
 				self.imageDataFetcher.fetchImageData(from: search.path) { [unowned self] result in
 					switch result {
 					case .success(let data):
@@ -48,7 +48,7 @@ class SearchInteractor: ISearchInteractor {
 						self.presenter?.present(response: response)
 					}
 				}
-			}
+//			}
 		case .savePicture(picture: let picture):
 			if let imageData = picture.image.jpegData(compressionQuality: 1.0) {
 				storageManager.save(picture.searchTerm, imageData: imageData) { [unowned self] _ in

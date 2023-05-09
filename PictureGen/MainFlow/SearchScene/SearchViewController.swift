@@ -46,14 +46,19 @@ class SearchViewController: UIViewController {
 		view.backgroundColor = Theme.backgroundColor
 	}
 	
-	@objc
-	func save() {
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		super.touchesBegan(touches, with: event)
+		searchController.searchBar.resignFirstResponder()
+	}
+	
+	@objc func save() {
 		if let image = imageView.image, let term = searchController.searchBar.text {
 			let picture = SearchModel.Request.Picture(
 				searchTerm: term,
 				image: image
 			)
 			interactor?.makeRequest(request: .savePicture(picture: picture))
+			self.searchController.searchBar.text = ""
 		}
 	}
 	
@@ -86,12 +91,12 @@ private extension SearchViewController {
 	}
 	
 	func makeSaveButton(accessibilityIdentifier: String) -> UIButton {
-		let button = UIButton()
+		let button = UIButton(type: .system)
 		
-		button.configuration = .filled()
-		button.configuration?.cornerStyle = .medium
-		button.configuration?.baseBackgroundColor = Theme.accentColor
-		button.configuration?.title = L10n.SearchScene.saveButtonTitle
+		button.backgroundColor = Theme.accentColor
+		button.setTitle(L10n.SearchScene.saveButtonTitle, for: .normal)
+		button.setTitleColor(.white, for: .normal)
+		button.layer.cornerRadius = 8.0
 		button.addTarget(self, action: #selector(save), for: .touchUpInside)
 		button.accessibilityIdentifier = accessibilityIdentifier
 		
@@ -275,13 +280,3 @@ extension SearchViewController: UISearchBarDelegate {
 		})
 	}
 }
-
-#if DEBUG
-struct ViewControllerProvider: PreviewProvider {
-	static var previews: some View {
-		Group {
-			SearchViewController().preview()
-		}
-	}
-}
-#endif

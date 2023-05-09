@@ -8,6 +8,7 @@
 
 "SearchScene.title" = "Search";
 "SearchScene.saveButtonTitle" = "Save";
+"SearchScene.saveMessageTitle" = "Save";
 "SearchScene.info" = "Start typing text to generate an image.";
 "SearchScene.saveMessage" = "The picture has been saved with seatch term: ";
 "SearchScene.errorMessage.dataNotFound" = "Data not found";

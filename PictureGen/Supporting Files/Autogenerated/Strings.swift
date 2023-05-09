@@ -22,6 +22,8 @@ internal enum L10n {
     internal static let saveButtonTitle = L10n.tr("Localizable", "SearchScene.saveButtonTitle")
     /// The picture has been saved with seatch term: 
     internal static let saveMessage = L10n.tr("Localizable", "SearchScene.saveMessage")
+    /// Save
+    internal static let saveMessageTitle = L10n.tr("Localizable", "SearchScene.saveMessageTitle")
     /// Search
     internal static let title = L10n.tr("Localizable", "SearchScene.title")
 

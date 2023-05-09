@@ -35,7 +35,7 @@ final class SearchRouter: ISearchRouter {
 	func showMessage(message: String) {
 		let alert: UIAlertController
 		alert = UIAlertController(
-			title: " ",
+			title: L10n.SearchScene.saveMessageTitle,
 			message: message,
 			preferredStyle: UIAlertController.Style.alert
 		)
